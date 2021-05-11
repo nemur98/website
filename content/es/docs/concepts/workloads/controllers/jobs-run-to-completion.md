@@ -339,7 +339,7 @@ Los nombres de los patrones son también enlaces a ejemplos e información más 
 Cuando se especifican terminaciones con `.spec.completions`, cada Pod creado por el controlado del Job
 tiene un [`spec`](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status)idéntico.
 Esto significa que todos los pods de una tarea tendrán la misma línea de comandos y la
-misma imagne, los mismo volúmenes, y (casi) las mismas variables de entorno.
+misma imagen, los mismo volúmenes, y (casi) las mismas variables de entorno.
 Estos patrones otorgan diferentes formas de organizar los pods para que trabajen en cosas distintas.
 
 Esta tabla muestra la configuración necesaria para `.spec.parallelism` y `.spec.completions` para cada uno de los patrones.
