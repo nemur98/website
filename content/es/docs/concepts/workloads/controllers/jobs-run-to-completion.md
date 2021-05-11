@@ -339,7 +339,7 @@ Los nombres de los patrones son también enlaces a ejemplos e información más 
 Cuando se especifican terminaciones con `.spec.completions`, cada Pod creado por el controlado del Job
 tiene un [`spec`](https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status)idéntico.
 Esto significa que todos los pods de una tarea tendrán la misma línea de comandos y la
-misma imagne, los mismo volúmenes, y (casi) las mismas variables de entorno.
+misma imagen, los mismo volúmenes, y (casi) las mismas variables de entorno.
 Estos patrones otorgan diferentes formas de organizar los pods para que trabajen en cosas distintas.
 
 Esta tabla muestra la configuración necesaria para `.spec.parallelism` y `.spec.completions` para cada uno de los patrones.
@@ -364,7 +364,7 @@ Se elige un valor de selector que no se entremezcle con otras tareas.
 Sin embargo, en algunos casos, puede que necesites sobreescribir este selector que se configura de forma automática.
 Para ello, puedes indicar el valor de `.spec.selector` en el Job.
 
-Pero ten mucho cuidado cuando lo hagas. Si configuras un selector de etiquta que no
+Pero ten mucho cuidado cuando lo hagas. Si configuras un selector de etiqueta que no
  es único para los pods de ese Job, y que selecciona Pods que no tienen que ver, 
  entonces estos últimos pueden ser eliminados, o este Job puede contar los otros
  Pods para terminarse, o uno o ambos Jobs pueden negarse a crear Pods o ejecutarse hasta el final.
@@ -374,7 +374,7 @@ Pero ten mucho cuidado cuando lo hagas. Si configuras un selector de etiquta que
 
 Aquí se muestra un ejemplo de un caso en que puede que necesites usar esta característica.
 
-Digamos que el Job `viejo` todavía está ejeuctándose. Quieres que los Pods existentes
+Digamos que el Job `viejo` todavía está ejecutándose. Quieres que los Pods existentes
 sigan corriendo, pero quieres que el resto de los Pods que se creen
 usen una plantilla pod diferente y que el Job tenga un nombre nuevo.
 Como no puedes modificar el Job porque esos campos no son modificables, eliminas el Job `old`,
@@ -397,7 +397,7 @@ Entonces, creas un nuevo Job con el nombre `nuevo` y le configuras explícitamen
 Puesto que los Pods existentes tienen la etiqueta `job-uid=a8f3d00d-c6d2-11e5-9f87-42010af00002`,
 son controlados por el Job `nuevo` igualmente.
 
-Necesitas configurar `manualSelector: true` en el nuevo Job, ya qye no estás usando
+Necesitas configurar `manualSelector: true` en el nuevo Job, ya que no estás usando
  el selector que normalmente se genera de forma automática por el sistema.
 
 ```
