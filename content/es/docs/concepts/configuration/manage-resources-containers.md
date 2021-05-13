@@ -374,7 +374,7 @@ el límite del recurso de almacenamiento.
 
 Sin embargo, si el espacio del sistema de archivos para la capa de escritura del contenedor,
 logs a nivel de nodo o volúmenes `emptyDir` decae, el 
-{{< glossary_tooltip text="taints" term_id="taint" >}}  del nodo lanza la desalojo para 
+{{< glossary_tooltip text="taints" term_id="taint" >}}  del nodo lanza el desalojo para 
 cualquier Pod que no tolere dicho taint. 
 
 Mira las [configuraciones soportadas](#configurations-for-local-ephemeral-storage)
@@ -398,7 +398,7 @@ para archivos eliminados.
 
 Si tú (o un contenedor) creas un archivo dentro de un volumen `emptyDir`,
 y algo mas abre ese archivo, y tú lo borras mientras este está abierto,
-entonces el inodo para este archivo borrado se mantiene hasta que cierras
+entonces el nodo para este archivo borrado se mantiene hasta que cierras
 el archivo, pero Kubelet no cataloga este espacio como en uso.
 {{< /note >}}
 {{% /tab %}}
