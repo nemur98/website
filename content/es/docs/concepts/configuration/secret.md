@@ -239,7 +239,7 @@ Las llaves de data y stringData deben consistir en caracteres alfanuméricos,
 
 **Nota de codificación:** Los valores serializados JSON y YAML  de los datos secretos estan codificadas como cadenas base64.  Las nuevas lineas no son válidas dentro de esa cadena y debe ser omitido.  Al usar `base64` en Darwin/macOS, los usuarios deben evitar el uso de la opción `-b` para dividir líneas largas. Por lo contratio los usuarios de Linux *deben* añadir la opción `-w 0` a los comandos `base64` o al pipeline `base64 | tr -d '\n'` si la opción `-w` no esta disponible.
 
-#### Creaando un Secret a partir de Generador
+#### Creando un Secret a partir de Generador
 Kubectl soporta [managing objects using Kustomize](/docs/tasks/manage-kubernetes-objects/kustomization/)
 desde 1.14. Con esta nueva característica,
 puedes tambien crear un Secret a partir de un generador y luego aplicarlo para crear el objeto en el Apiserver. Los generadores deben ser especificados en un   `kustomization.yaml` dentro de un directorio.
@@ -593,7 +593,7 @@ Una imagePullSecret es una forma de pasar a kubelet un Secret que contiene las c
 
 **Especificar manualmente una imagePullSecret**
 
-El uso de imagePullSecrets se desccriben en la documentación de las imágenes [images documentation](/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
+El uso de imagePullSecrets se describen en la documentación de las imágenes [images documentation](/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod)
 
 ### Organización de imagePullSecrets para que se Adjunte Automáticamente
 
@@ -862,9 +862,9 @@ tu debes usar `ls -la` para verlos al enumerar los contenidos del directorio.
 
 ### Caso de uso: Secret visible para un contenedor en un pod
 
-Considere un programa que necesita manejar solicitudes HTTP, hacer una lógicca empresarial compleja y luego firmar algunos mensajes con un HMAC. Debido a que tiene una lógica de aplicación compleja, puede haber una vulnerabilidad de lectura remota de archivos inadvertida en el servidor, lo que podría exponer la clave privada a un atacante.
+Considere un programa que necesita manejar solicitudes HTTP, hacer una lógica empresarial compleja y luego firmar algunos mensajes con un HMAC. Debido a que tiene una lógica de aplicación compleja, puede haber una vulnerabilidad de lectura remota de archivos inadvertida en el servidor, lo que podría exponer la clave privada a un atacante.
 
-Esto podría dividirse en dos procesos en dos contenedores: un contenedor de frontend que maneja la interacción del usuario y la lógica empresarial. pero que no puede ver la clave privada; y un contenedor de firmante que puede ver la clave privada, y responde a solicitudes de firma simples del frontend (ejemplo, a través de redes de localhost).
+Esto podría dividirse en dos procesos en dos contenedores: un contenedor de frontend que maneja la interacción del usuario y la lógica empresarial, pero que no puede ver la clave privada; y un contenedor de firmante que puede ver la clave privada, y responde a solicitudes de firma simples del frontend (ejemplo, a través de redes de localhost).
 
 Con este enfoque particionado, un atacante ahora tiene que engañar a un servidor de aplicaciones para que haga algo bastante arbitrario, lo que puede ser más difícil que hacer que lea un archivo.
 
@@ -878,14 +878,14 @@ Al implementar aplicaciones que interactuan con los API Secrets, el acceso debe 
 /docs/reference/access-authn-authz/authorization/) como [RBAC](
 /docs/reference/access-authn-authz/rbac/).
 
-Los Secrets a menudo contienen valores que abarcan un espectro de importancia, muchos de los cuales pueden causar escalamientos dentro de Kubernetes (ejememplo, tokens de cuentas de servicio) y a sistemas externos. Incluso si  una aplicación individual puede razonar sobre el poder de los Secrets con los que espera interactuar, otras aplicaciones dentro dle mismo namespace pueden invalidar esos supuestos.
+Los Secrets a menudo contienen valores que abarcan un espectro de importancia, muchos de los cuales pueden causar escalamientos dentro de Kubernetes (ejemplo, tokens de cuentas de servicio) y a sistemas externos. Incluso si  una aplicación individual puede razonar sobre el poder de los Secrets con los que espera interactuar, otras aplicaciones dentro del mismo namespace pueden invalidar esos supuestos.
 
 Por esas razones las solicitudes de `watch` y `list` dentro de un espacio de nombres son extremadamente poderosos y deben evitarse, dado que listar Secrets permiten a los clientes inspecionar los valores de todos los Secrets que estan en el namespace. La capacidad para `watch` and `list` todos los Secrets en un cluster deben reservarse solo para los componentes de nivel de sistema más privilegiados.
 
 Las aplicaciones que necesitan acceder a la API de Secrets deben realizar solicitudes de `get` de los Secrets que necesitan. Esto permite a los administradores restringir el acceso a todos los Secrets mientras [white-listing access to individual instances](
 /docs/reference/access-authn-authz/rbac/#referring-to-resources) que necesita la aplicación.
 
-Para un mejor rendimiento sobre un bucle `get`, los clientes pueden diseñar recursos que hacen referencia a un Secret y luego un Secret `watch` el recurso, al volver a solicitar el Secret cuando cambie la referencia. Además,, un ["bulk watch" API](
+Para un mejor rendimiento sobre un bucle `get`, los clientes pueden diseñar recursos que hacen referencia a un Secret y luego un Secret `watch` el recurso, al volver a solicitar el Secret cuando cambie la referencia. Además, un ["bulk watch" API](
 https://github.com/kubernetes/community/blob/master/contributors/design-proposals/api-machinery/bulk_watch.md)
 para que los clientes puedan `watch` recursos individuales, y probablemente estará disponible en futuras versiones de Kubernetes.
 
@@ -893,16 +893,16 @@ para que los clientes puedan `watch` recursos individuales, y probablemente esta
 
 ### Protecciones
 
-Debido a que los objetos `Secret` se pueden crear independientemente de los `Pods` que los usan, hay menos riesgo de que el Secret expuesto durante el flujo de trabajo de la creación,  visualización, y edición de pods. El sistema también puede tomar precausiones con los objetos`Secret`, tal como eviar escribirlos en el disco siempre que sea posible.
+Debido a que los objetos `Secret` se pueden crear independientemente de los `Pods` que los usan, hay menos riesgo de que el Secret expuesto durante el flujo de trabajo de la creación,  visualización, y edición de pods. El sistema también puede tomar precauciones con los objetos`Secret`, tal como evitar escribirlos en el disco siempre que sea posible.
 
 Un Secret solo se envía a un nodo si un pod en ese nodo lo requiere. Kubelet almacena el Secret en un `tmpfs` para que el Secret no se escriba en el almacenamiento de disco. Una vez que se elimina el pod que depende del Secret, kubelet eliminará su copia local de los datos de Secrets.
 
 Puede haber Secrets para varios Pods en el mismo nodo. Sin embargo, solo los Secrets que solicita un Pod son potencialmente visibles dentro de sus contenedores. Por lo tanto, un Pod no tiene acceso a los Secrets de otro Pod.
 
-Puede haver varios contenedores en un Pod. Sin embargo, cada contenedor en un pod tiene que solicitar el volumen del Secret en su 
-`volumeMounts` para que sea visible dentro del contenedor. Esto se puede usar para construir particiones de seguridad útiles en el Pod level](#use-case-secret-visible-to-one-container-in-a-pod).
+Puede haber varios contenedores en un Pod. Sin embargo, cada contenedor en un pod tiene que solicitar el volumen del Secret en su 
+`volumeMounts` para que sea visible dentro del contenedor. Esto se puede usar para construir particiones de seguridad útiles en el Pod level (#use-case-secret-visible-to-one-container-in-a-pod).
 
-En la mayoría de las distribuciones Kubernetes-project-maintained, la comunicación entre usuario a el apiserver, y del apiserver a kubelets, ista protegido por SSL/TLS.
+En la mayoría de las distribuciones Kubernetes-project-maintained, la comunicación entre usuario a el apiserver, y del apiserver a kubelets, insta protegido por SSL/TLS.
 Los Secrets estan protegidos cuando se transmiten por estos canales.
 
 {{< feature-state for_k8s_version="v1.13" state="beta" >}}
